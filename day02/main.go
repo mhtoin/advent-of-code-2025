@@ -110,43 +110,20 @@ func solvePart2() {
 			for num := start; num <= end; num++ {
 				numStr := strconv.Itoa(num)
 				lenNum := len(numStr)
-				divisors := []int{}
 
-				for d := 1; d*d <= lenNum; d++ {
-					if lenNum%d == 0 {
-						if d > 1 {
-							divisors = append(divisors, d)
-						}
-						other := lenNum / d
-						if other > 1 && other != d {
-							divisors = append(divisors, other)
-						}
-					}
-				}
-
-				for _, div := range divisors {
-					partLen := lenNum / div
-					parts := []string{}
-
-					for i := 0; i < lenNum; i += partLen {
-						parts = append(parts, numStr[i:i+partLen])
+				for parts := 2; parts <= lenNum; parts++ {
+					if lenNum%parts != 0 {
+						continue
 					}
 
-					allEqual := true
-					for j := 1; j < len(parts); j++ {
-						if parts[j] != parts[0] {
-							allEqual = false
-							break
-						}
-					}
+					partLen := lenNum / parts
+					pattern := numStr[:partLen]
 
-					if allEqual {
+					if strings.Repeat(pattern, parts) == numStr {
 						totalSum += num
 						break
 					}
-
 				}
-
 			}
 		}
 	}
