@@ -47,23 +47,21 @@ func solvePart1() {
 			}
 
 			for num := start; num <= end; num++ {
-
 				numStr := strconv.Itoa(num)
-				if len(numStr)%2 == 0 {
-					mid := len(numStr) / 2
-					numParts := []string{numStr[:mid], numStr[mid:]}
-					fmt.Printf("Number %d split into: %v\n", num, numParts)
+				if len(numStr)%2 != 0 {
+					continue
+				}
 
-					if len(numParts) != 2 {
-						fmt.Printf("Unexpected split result for number %d: %v\n", num, numParts)
-						continue
-					}
+				mid := len(numStr) / 2
+				numParts := []string{numStr[:mid], numStr[mid:]}
 
-					firstHalf, secondHalf := numParts[0], numParts[1]
-					if firstHalf == secondHalf {
-						fmt.Printf("Number %d has identical halves, \n", num)
-						totalSum += num
-					}
+				if len(numParts) != 2 {
+					continue
+				}
+
+				firstHalf, secondHalf := numParts[0], numParts[1]
+				if firstHalf == secondHalf {
+					totalSum += num
 				}
 
 			}
@@ -98,7 +96,6 @@ func solvePart2() {
 			id := strings.TrimSpace(ids[i])
 			parts := strings.Split(id, "-")
 			if len(parts) != 2 {
-				fmt.Printf("Invalid ID format: %s\n", id)
 				continue
 			}
 
@@ -107,7 +104,6 @@ func solvePart2() {
 			end, err2 := strconv.Atoi(endStr)
 
 			if err1 != nil || err2 != nil {
-				fmt.Printf("Invalid number in ID: %s\n", id)
 				continue
 			}
 
@@ -145,7 +141,6 @@ func solvePart2() {
 					}
 
 					if allEqual {
-						fmt.Printf("Number %d has all equal parts: %v\n", num, parts)
 						totalSum += num
 						break
 					}
