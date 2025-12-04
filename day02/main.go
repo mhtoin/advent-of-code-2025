@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 	"strconv"
 	"strings"
@@ -15,18 +14,9 @@ func main() {
 }
 
 func solvePart1() {
-	file, err := common.GetInputFile(2)
-
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
 	totalSum := 0
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	common.ForEachLine(2, func(line string) {
 		ids := strings.Split(line, ",")
 
 		for i := range ids {
@@ -67,29 +57,15 @@ func solvePart1() {
 			}
 
 		}
-
-	}
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
+	})
 
 	fmt.Printf("Total sum: %d\n", totalSum)
 }
 
 func solvePart2() {
-	file, err := common.GetInputFile(2)
-
-	if err != nil {
-		panic(err)
-	}
-	defer file.Close()
-
-	scanner := bufio.NewScanner(file)
 	totalSum := 0
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	common.ForEachLine(2, func(line string) {
 		ids := strings.Split(line, ",")
 
 		for i := range ids {
@@ -126,10 +102,6 @@ func solvePart2() {
 				}
 			}
 		}
-	}
+	})
 	fmt.Printf("Total sum: %d\n", totalSum)
-
-	if err := scanner.Err(); err != nil {
-		panic(err)
-	}
 }

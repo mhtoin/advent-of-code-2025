@@ -1,7 +1,6 @@
 package main
 
 import (
-	"bufio"
 	"fmt"
 
 	"github.com/mhtoin/advent-of-code-2025/common"
@@ -13,13 +12,9 @@ func main() {
 }
 
 func solvePart1() {
-	file, _ := common.GetInputFile(3)
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
 	total := 0
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	common.ForEachLine(3, func(line string) {
 		var num int = 0
 		pos := 0
 
@@ -37,18 +32,14 @@ func solvePart1() {
 			pos = maxIdx + 1
 		}
 		total += num
-	}
+	})
 	fmt.Printf("Total Sum of Jolts: %d\n", total)
 }
 
 func solvePart2() {
-	file, _ := common.GetInputFile(3)
-	defer file.Close()
-	scanner := bufio.NewScanner(file)
 	var total int64 = 0
 
-	for scanner.Scan() {
-		line := scanner.Text()
+	common.ForEachLine(3, func(line string) {
 		var num int64 = 0
 		pos := 0
 
@@ -66,6 +57,6 @@ func solvePart2() {
 			pos = maxIdx + 1
 		}
 		total += num
-	}
+	})
 	fmt.Printf("Total Sum of Jolts: %d\n", total)
 }
