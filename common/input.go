@@ -1,11 +1,13 @@
 package common
 
 import (
+	"bufio"
 	"fmt"
 	"io"
 	"net/http"
 	"os"
 	"path/filepath"
+	"strconv"
 
 	"github.com/joho/godotenv"
 )
@@ -73,4 +75,47 @@ func GetInputFile(day int) (*os.File, error) {
 	}
 	fmt.Printf("Input file for day %d opened successfully.\n", day)
 	return file, err
+}
+
+// returns all lines from the input file as a slice of strings
+func ReadLines(day int) []string {
+	file, err := GetInputFile(day)
+	check(err)
+	defer file.Close()
+
+	var lines []string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		lines = append(lines, scanner.Text())
+	}
+	check(scanner.Err())
+	return lines
+}
+
+// calls the provided function for each line in the input file
+func ForEachLine(day int, fn func(line string)) {
+	file, err := GetInputFile(day)
+	check(err)
+	defer file.Close()
+
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		fn(scanner.Text())
+	}
+	check(scanner.Err())
+}
+
+// converts a string to int, panics on error
+func MustAtoi(s string) int {
+	n, err := strconv.Atoi(s)
+	check(err)
+	return n
+}
+
+// returns the absolute value of an integer
+func Abs(n int) int {
+	if n < 0 {
+		return -n
+	}
+	return n
 }
