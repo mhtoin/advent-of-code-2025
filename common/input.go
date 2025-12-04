@@ -92,6 +92,26 @@ func ReadLines(day int) []string {
 	return lines
 }
 
+// returns all lines from the input file as a 2D slice of strings (each character as a separate string)
+func Read2DLines(day int) [][]string {
+	file, err := GetInputFile(day)
+	check(err)
+	defer file.Close()
+
+	var lines [][]string
+	scanner := bufio.NewScanner(file)
+	for scanner.Scan() {
+		line := scanner.Text()
+		lineParts := make([]string, len(line))
+		for i := range line {
+			lineParts[i] = string(line[i])
+		}
+		lines = append(lines, lineParts)
+	}
+	check(scanner.Err())
+	return lines
+}
+
 // calls the provided function for each line in the input file
 func ForEachLine(day int, fn func(line string)) {
 	file, err := GetInputFile(day)
