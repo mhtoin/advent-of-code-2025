@@ -3,8 +3,6 @@ package main
 import (
 	"bufio"
 	"fmt"
-	"slices"
-	"strconv"
 
 	"github.com/mhtoin/advent-of-code-2025/common"
 )
@@ -15,87 +13,59 @@ func main() {
 }
 
 func solvePart1() {
-	file, err := common.GetInputFile(3)
-
-	if err != nil {
-		panic(err)
-	}
+	file, _ := common.GetInputFile(3)
 	defer file.Close()
-
 	scanner := bufio.NewScanner(file)
-
-	totalSumOfJolts := 0
+	total := 0
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		highestFound := 0
-		secondHighestFound := 0
+		var num int = 0
+		pos := 0
 
-		for i := 0; i < len(line); i++ {
-			char, _ := strconv.Atoi(string(line[i]))
+		for i := range 2 {
+			remaining := 2 - i - 1
+			end := len(line) - remaining
+			maxDigit, maxIdx := byte('0'), pos
 
-			if highestFound == 0 || char > highestFound && i != len(line)-1 {
-				highestFound = char
-				secondHighestFound = 0
-				continue
-
+			for j := pos; j < end; j++ {
+				if line[j] > maxDigit {
+					maxDigit, maxIdx = line[j], j
+				}
 			}
-
-			if (secondHighestFound == 0 && highestFound > 0) || (char > secondHighestFound) {
-				secondHighestFound = char
-				continue
-			}
-
+			num = num*10 + int(maxDigit-'0')
+			pos = maxIdx + 1
 		}
-		combinedNumber := highestFound*10 + secondHighestFound
-		totalSumOfJolts += combinedNumber
+		total += num
 	}
-
-	fmt.Printf("Total Sum of Jolts: %d\n", totalSumOfJolts)
-
+	fmt.Printf("Total Sum of Jolts: %d\n", total)
 }
 
 func solvePart2() {
-	file, err := common.GetInputFile(3)
-
-	if err != nil {
-		panic(err)
-	}
+	file, _ := common.GetInputFile(3)
 	defer file.Close()
-
 	scanner := bufio.NewScanner(file)
-
-	var totalSumOfJolts int64 = 0
+	var total int64 = 0
 
 	for scanner.Scan() {
-		chosen := []int{}
 		line := scanner.Text()
-		start := 0
+		var num int64 = 0
+		pos := 0
 
-		for {
-			windowSize := len(line) - (12 - len(chosen)) + 1
+		for i := range 12 {
+			remaining := 12 - i - 1
+			end := len(line) - remaining
+			maxDigit, maxIdx := byte('0'), pos
 
-			slice := line[start:windowSize]
-			ints := make([]int, len(slice))
-			for i := 0; i < len(slice); i++ {
-				ints[i] = int(slice[i] - '0')
+			for j := pos; j < end; j++ {
+				if line[j] > maxDigit {
+					maxDigit, maxIdx = line[j], j
+				}
 			}
-			maximum := slices.Max(ints)
-			chosen = append(chosen, maximum)
-			start += slices.Index(ints, maximum) + 1
-
-			if len(chosen) == 12 {
-				break
-			}
+			num = num*10 + int64(maxDigit-'0')
+			pos = maxIdx + 1
 		}
-
-		var combinedNumber int64 = 0
-		for _, digit := range chosen {
-			combinedNumber = combinedNumber*10 + int64(digit)
-		}
-		totalSumOfJolts += int64(combinedNumber)
+		total += num
 	}
-
-	fmt.Printf("Total Sum of Jolts: %d\n", totalSumOfJolts)
-
+	fmt.Printf("Total Sum of Jolts: %d\n", total)
 }
